@@ -26,7 +26,11 @@ jobs:
         run: |
           semgrep scan --json --output scan_results.json --config="p/default"
           
-      - name: AI Triage Agent
+      # - name: AI Triage Agent
+      #   env:
+      #     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      #   run: python scripts/ai_triage.py scan_results.json
+      - name: Full AI Repository Audit
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/ai_triage.py scan_results.json
+        run: python scripts/full_audit.py
