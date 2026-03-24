@@ -9,6 +9,7 @@ import (
 )
 
 // know that before/after package/test and the test itself have run and when they were run
+// test
 var bp, bt, at, ap, tt time.Time
 var subtestResult *bool
 
