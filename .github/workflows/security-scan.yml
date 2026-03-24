@@ -1,19 +1,31 @@
 name: "Security Scan & AI Triage"
 on: [push]
 
+# This is the "Force" fix mentioned in your error log
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      # 1. Run the Scanner
-      - name: Semgrep Scan
+      # Use the latest stable version of checkout
+      - name: Checkout Code
+        uses: actions/checkout@v4 
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
         run: |
-          pip install semgrep
+          pip install semgrep anthropic
+          
+      - name: Run Semgrep Scan
+        run: |
           semgrep scan --json --output scan_results.json --config="p/default"
           
-      # 2. Run AI Agent
       - name: AI Triage Agent
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
