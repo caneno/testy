@@ -14,6 +14,21 @@ def triage_with_claude(file_path):
     for finding in data.get('results', []):
         code_snippet = finding['extra']['lines']
         issue_desc = finding['extra']['message']
+
+        # High level Prompt
+        prompt = f"""
+        You are a Staff Security Engineer conducting a 'Deep Logic' audit.
+        
+        <CONTEXT>
+        Issue: {issue_desc}
+        Code Snippet: {code_snippet}
+        </CONTEXT>
+        
+        TASK:
+        1. VALIDATE: Is the scanner correct (True Positive) or is this noise (False Positive)?
+        2. LOGIC CHECK: Are there hidden logical errors or edge cases here?
+        3. IMPROVEMENT: Suggest a refactor for better security/performance.
+        """
         
         # Claude excels at technical reasoning
         message = client.messages.create(
@@ -22,7 +37,7 @@ def triage_with_claude(file_path):
             messages=[
                 {
                     "role": "user",
-                    "content": f"Review this security finding:\nIssue: {issue_desc}\nCode: {code_snippet}\n\nAssess if this is a True Positive and suggest a fix."
+                    "content":prompt
                 }
             ]
         )
