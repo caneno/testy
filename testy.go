@@ -51,6 +51,7 @@ type TestResult struct {
 }
 
 // Level indicates at what log level a Msg was emitted.
+// testing changes
 type Level string
 
 const (
