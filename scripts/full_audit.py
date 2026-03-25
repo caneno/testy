@@ -38,7 +38,7 @@ def audit_repository(root_dir):
                     """
 
                     response = client.messages.create(
-                        model="claude-4-6-sonnet-latest", 
+                        model="claude-sonnet-4-6", 
                         max_tokens=1024,
                         messages=[{"role": "user", "content": prompt}]
                     )
